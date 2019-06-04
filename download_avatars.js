@@ -34,9 +34,9 @@ function downloadImageByURL(url, filePath) {
     });   
 }
 
-// downloadImageByURL('https://avatars1.githubusercontent.com/u/43004?v=4', 'avatars/pbakaus.jpg');
+let args = process.argv.slice(2);
 
-getRepoContributors("jquery", "jquery", function(err, result) {
+getRepoContributors(args[0], args[1], function(err, result) {
   console.log("Errors:", err);
   const dirName = './avatars';
   if(!fs.existsSync(dirName)){
