@@ -35,6 +35,9 @@ function downloadImageByURL(url, filePath) {
 }
 
 let args = process.argv.slice(2);
+if(args.length < 2){
+  throw Error('Enter two arguments, a repository owner and the respository name');
+}
 
 getRepoContributors(args[0], args[1], function(err, result) {
   console.log("Errors:", err);
