@@ -50,20 +50,20 @@ function downloadImageByURL(url, filePath) {
 //get arguments from the command line
 let args = process.argv.slice(2);
 if(args.length < 2){
-  throw Error('Enter two arguments, a repository owner and the respository name');
+  console.log('Error: Enter two arguments, a repository owner and the respository name');
+} else {
+  getRepoContributors(args[0], args[1], function(err, result) {
+    console.log("Errors:", err);
+    //declare the desired directory name
+    const dirName = './avatars';
+    //if the directory doesn't exist
+    if(!fs.existsSync(dirName)){
+      //create a new directory
+      fs.mkdirSync(dirName);
+    }
+    
+    result.forEach(element => {
+      downloadImageByURL(element['avatar_url'], dirName + '/' + element['login'] + '.jpg');
+    });;
+  });
 }
-
-getRepoContributors(args[0], args[1], function(err, result) {
-  console.log("Errors:", err);
-  //declare the desired directory name
-  const dirName = './avatars';
-  //if the directory doesn't exist
-  if(!fs.existsSync(dirName)){
-    //create a new directory
-    fs.mkdirSync(dirName);
-  }
-  
-  result.forEach(element => {
-    downloadImageByURL(element['avatar_url'], dirName + '/' + element['login'] + '.jpg');
-  });;
-});
