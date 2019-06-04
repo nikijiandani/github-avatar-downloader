@@ -10,7 +10,7 @@ console.log('Welcome to the GitHub Avatar Downloader!');
 function getRepoContributors(repoOwner, repoName, cb) {
   //declare object to use for request
   var options = {
-    url: "https://api.github.com/repos/" + repoOwner + "/" + repoName + "/contributors?client_secret=" + secret ,
+    url: "https://api.github.com/repos/" + repoOwner + "/" + repoName + "/contributors",
     headers: {
       'User-Agent': secret.GITHUB_ID,
       'Authorization': "token " + secret.GITHUB_TOKEN
@@ -22,8 +22,12 @@ function getRepoContributors(repoOwner, repoName, cb) {
     let data = JSON.parse(body);
     console.log('Status code : ', res.statusCode);
     console.log('Status message : ', res.statusMessage)
-    //pass data to callback
-    cb(err, data);
+    if(res.statusCode !== 200){
+      console.log(`You have encountered an error. Please check your arguments and try again. Error code: ${res.statusCode}`);
+    } else {
+      //pass data to callback
+      cb(err, data);
+    }
   });
 }
 
@@ -58,7 +62,7 @@ getRepoContributors(args[0], args[1], function(err, result) {
     //create a new directory
     fs.mkdirSync(dirName);
   }
-
+  
   result.forEach(element => {
     downloadImageByURL(element['avatar_url'], dirName + '/' + element['login'] + '.jpg');
   });;
